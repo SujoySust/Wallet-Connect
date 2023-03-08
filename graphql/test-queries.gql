@@ -1,0 +1,309 @@
+mutation adminLogin($username: String!, $password: String!) {
+    response: StaffLogin(data: {username: $username, password: $password}) {
+        accessToken
+    }
+}
+
+query getAccountByAddress {
+    resposne: getAccountByAddress(wallet_address: "0x7024946983539c9c4b2fDa25c759194C25A76033") {
+        ...user
+    }
+}
+
+mutation generateLoginMessage {
+    response: generateLoginMessage(wallet_address: "0x7024946983539c9c4b2fDa25c759194C25A76065") {
+        login_message, nonce
+    }
+}
+
+mutation walletLogin {
+    response: walletLogin(data: {
+        address: "0x7024946983539c9c4b2fDa25c759194C25A76065",
+        signature: "0x8078033b9f5dbdeafb080bd7dbe7da7d226b1da10a59805e0696c542ec6fac7455dbd1390d473a3d2d3e986a0147dc806db3be90f3da9cc1afbc307dd1d78ced1b",
+        nonce: "329006"}) {
+        accessToken
+    }
+}
+
+query me{
+    me{
+        ...user
+    }
+}
+
+query checkUniqueUser{
+    checkUniqueUser(username:"sujoynath"){
+        success
+        message
+    }
+}
+
+query userDetails{
+    userDetails{
+        user{
+            ...user
+        }
+        social_links{
+            website_link
+            instagram_link
+        }
+    }
+}
+
+mutation updateProfile($updateUserProfileData: UpdateProfileInput!) {
+    response: updateProfile(data: $updateUserProfileData) 	{
+        ...response
+    }
+}
+
+mutation updateStaffProfile_2($updateProfileData: StaffUpdateInput_2!) {
+    response: updateStaffProfile_2(data: $updateProfileData) {
+        ...response
+    }
+}
+
+query adminProfile {
+    response: staff {
+        ...staff
+    }
+}
+
+
+query getCategories{
+    getCategories{
+        ...category
+    }
+}
+
+query getBlockchainLists{
+    getBlockchainLists{
+        ...blockchain
+    }
+}
+
+query getTokenLists{
+    getTokenLists{
+        ...token
+    }
+}
+
+query getCollectionDetails{
+    getCollectionDetails(slug: "test-collection-777"){
+        collection{
+            ...collection
+        }
+        social_links{
+            instagram_link
+            website_link
+        }
+        token_mappings{
+            payment_token{
+                id
+                name
+                logo
+            }
+        }
+    }
+}
+
+query getCollectionListsPaginate($paginate: Int!){
+    getCollectionListsPaginate(first: $paginate){
+        pageInfo{
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+        edges{
+            node{
+                ...collection
+            }
+        }
+    }
+}
+
+query myCollectionsPaginate($paginate: Int!){
+    myCollectionsPaginate(first: $paginate){
+        pageInfo{
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+        edges{
+            node{
+                ...collection
+            }
+        }
+    }
+}
+
+query myCollectionLists{
+    myCollectionLists{
+        ...collection
+    }
+}
+
+query checkUniqueCollection{
+    checkUniqueCollection(slug: "upos-collection")		 		 {
+        success
+        message
+    }
+}
+
+mutation createCollection($getCreatCollectionData: CreateCollectionDto!){
+    createCollection(data: $getCreatCollectionData){
+        ...collection
+    }
+}
+
+mutation updateCollection($getUpdateCollectionData: UpdateCollectionDto!){
+    editCollection(id: 12, data: $getUpdateCollectionData){
+        ...collection
+    }
+}
+
+mutation deleteCollection{
+    deleteCollection(collectionId: 12){
+        success
+        message
+        code
+    }
+}
+
+// wallet auth queries
+mutation walletLogin { 
+  response: walletLogin(data: {
+    address: "0x9908CbCb070d1ed8d8f2c064b281D3029545b185", 
+    signature: "0xcc8343e86110776ba5882777b7860e1bb2d787f2ad0f65b2fec14017d1e2ab577221d9eda8ce459c8e8936cd1c8650a4ad9ea98750c141cee2ea13f8e7cbf4421c",
+  	nonce: "978695"}) {
+    accessToken
+  }
+}
+
+query getAccountByAddress {
+  resposne: getAccountByAddress(wallet_address: "0x3f64e4b25862BDe8Ba388a9aD71D336b4d0f4332") {
+    ...user
+  }
+}
+
+
+mutation generateLoginMessage {
+  response: generateLoginMessage(wallet_address: "0x9908CbCb070d1ed8d8f2c064b281D3029545b185") {
+    login_message, nonce
+  }
+}
+//
+
+fragment staff on Staff {
+    id, avatar, name, email, phone, created_at, updated_at
+}
+
+fragment response on ResponseModel {
+    success, message, code
+}
+
+fragment collection on Collection{
+    id
+    name
+    slug
+    description
+    logo
+    royalties
+    payout_address
+    contract_address
+    description
+    category_id
+    display_theme
+    feature_image
+    banner_image
+    status
+}
+fragment category on Category{
+    id
+    image
+    title
+    status
+    created_at
+    updated_at
+}
+fragment blockchain on BlockchainModel{
+    id
+    chain_id
+    currency_symbol
+    logo
+    network_name
+    nft_contract
+    rpc_url
+    status
+}
+fragment token on TokenModel{
+    id
+    name
+    logo
+    token_symbol
+    status
+}
+
+
+
+//variables
+{
+  "username": "admin",
+  "password": "12345678",
+  "updateProfileData" : {
+  "email": "admin-sss@yopmail.com",
+  "name": "Mr. Admin",
+  "phone": "",
+  "avatarFile": null
+},
+    "getCreatCollectionData" : {
+    "name": "Upos collection 007",
+    "slug": "upos-collection-007",
+    "description": "Some text will be written",
+    "logo_file": "",
+    "royalties": 3,
+    "blockchain_id": 1,
+    "payout_address": "0x7024946983539c9c4b2fDa25c759194C25A76065",
+    "feature_image_file": "",
+    "banner_image_file": "",
+    "category_id": 1,
+    "display_theme": 1,
+    "is_sensitive": 1,
+    "payment_tokens": "1,2",
+    "website_link": "www.collection-websitelink.com",
+    "discord_link": "www.collection-discordlink.com",
+    "instagram_link": "www.collection-instagram.com",
+    "medium_link": "www.mediumlink.com",
+    "telegram_link": "www.telegramlink.com",
+    "status": 1
+},
+    "getUpdateCollectionData" : {
+    "name": "Upos collection 007",
+    "slug": "upos-collection-007",
+    "description": "Some text will be written",
+    "logo_file": "",
+    "royalties": 3,
+    "payout_address": "0x7024946983539c9c4b2fDa25c759194C25A76065",
+    "feature_image_file": "",
+    "banner_image_file": "",
+    "category_id": 1,
+    "display_theme": 1,
+    "is_sensitive": 1,
+    "payment_tokens": "1,2",
+    "website_link": "www.collection-websitelink.com",
+    "discord_link": "www.collection-discordlink.com",
+    "instagram_link": "www.collection-instagram.com",
+    "medium_link": "www.mediumlink.com",
+    "telegram_link": "www.telegramlink.com",
+    "status": 1
+},
+"paginate": 10
+}
+
+//headers
+{
+"Authorization": "Bearer xxx",
+"lang": "en",
+"app-key": ""
+}
