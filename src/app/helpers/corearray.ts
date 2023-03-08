@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 
-import { NotificationEventModel } from '../models/notification-event.model';
 import {
   BLOCKCHAIN_BINANCE_MAINNET_CHAIN_ID,
   BLOCKCHAIN_BINANCE_MAINNET_SLUG,
@@ -385,57 +384,6 @@ export const BlockchainSlugMapping = {
   },
 };
 
-export const NotificationEvents : Array<NotificationEventModel> = [
-  {
-    id: NOTIFICATION_EVENTS_ITEM_SOLD,
-    title: __('Item Sold'),
-    description: 'When someone purchased one of your items',
-    status: STATUS_ACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_BID_ACTIVITY,
-    title: __('Bid Activity'),
-    description: __('When someone bids on one of your items'),
-    status: STATUS_ACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_PRICE_CHANGE,
-    title: __('Price Change'),
-    description: __('When an item you made an offer on changes in price'),
-    status: STATUS_INACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_AUCTION_EXPIRATION,
-    title: __('Auction Expiration'),
-    description: __('When a timed auction you created ends'),
-    status: STATUS_ACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_OUTBID,
-    title: __('Outbid'),
-    description: __('When an offer you placed is exceeded by another user'),
-    status: STATUS_INACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_OWNED_ITEM_UPDATES,
-    title: __('Owned Item Updates'),
-    description:
-      __('When a significant update occurs for one of the items you have purchased on OpenSea'),
-    status: STATUS_INACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_SUCCESSFULLY_PURCHASED,
-    title: __('Successful Purchase'),
-    description: __('When you successfully buy an item'),
-    status: STATUS_ACTIVE,
-  },
-  {
-    id: NOTIFICATION_EVENTS_OPENSEA_NEWSLETTER,
-    title: __('OpenSea Newsletter'),
-    description: __('Occasional updates from the OpenSea team'),
-    status: STATUS_INACTIVE,
-  },
-];
 
 export const RESTRICTED_KEY_WORDS= ['create', 'edit', 'delete', 'update'];
 

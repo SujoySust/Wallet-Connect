@@ -24,13 +24,11 @@ import { prisma_client } from 'src/app/helpers/functions';
 import { isAlphanumeric, isEmail } from 'class-validator';
 import { UserNotificationSettingDto } from './dto/user-notification-setting.dto';
 import { ResponseModel } from 'src/app/models/dto/response.model';
-import { NotificationSettingModel } from 'src/app/models/notification-setting.model';
 import { UserConnection } from 'src/app/models/pagination/user-connection.model';
 import { PaginationArgs } from 'src/libs/graphql/pagination/pagination.args';
 import { Prisma } from '@prisma/client';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { UserFilter } from './dto/filter.dto';
-import { CollectionWithItemFilter } from '../collection/dto/filter.dto';
 import { pOptions } from 'src/libs/graphql/pagination/number-cursor';
 
 @Injectable()
@@ -39,90 +37,6 @@ export class UserService {
     private readonly notificationService: NotificationService,
     private readonly fileService: FilesystemService,
   ) {}
-
-  async getAccountListsPaginate(
-    paginate: PaginationArgs,
-    filter: UserFilter,
-    withItemFilter: CollectionWithItemFilter,
-  ): Promise<UserConnection> {
-    return await findManyCursorConnection<
-      User,
-      Pick<Prisma.CollectionWhereUniqueInput, 'id'>
-    >(
-      (args) =>
-        prisma_client.user.findMany({
-          where: {
-            status: STATUS_ACTIVE,
-            OR: [
-              {
-                name: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-              {
-                username: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-              {
-                wallet_address: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-            ],
-          },
-          include: {
-            ownedItems:
-              withItemFilter && withItemFilter.withItem
-                ? {
-                    take: withItemFilter.totalItem ?? GLOBAL_SEARCH_QUERY_LIMIT,
-                    orderBy: { id: 'desc' },
-                  }
-                : false,
-            _count: {
-              select: {
-                ownedItems: true,
-              },
-            },
-          },
-          orderBy: {
-            id: 'desc',
-          },
-          ...args,
-        }),
-      () =>
-        prisma_client.user.count({
-          where: {
-            status: STATUS_ACTIVE,
-            OR: [
-              {
-                name: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-              {
-                username: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-              {
-                wallet_address: {
-                  contains: filter.query,
-                  mode: 'insensitive',
-                },
-              },
-            ],
-          },
-        }),
-      paginate,
-      pOptions,
-    );
-  }
 
   async checkUniqueUser(wallet_address: string, filter: any) {
     try {
@@ -399,18 +313,6 @@ export class UserService {
         });
         return successResponse(__('Notification settings saved successfully.'));
       }
-    } catch (e) {
-      processException(e);
-    }
-  }
-
-  async getNotificationSetting(user: User): Promise<NotificationSettingModel> {
-    try {
-      return await prisma_client.notificationSetting.findFirst({
-        where: {
-          user_id: user.id,
-        },
-      });
     } catch (e) {
       processException(e);
     }

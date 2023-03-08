@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AmountCalculationModel {
-  fee_amount: Decimal
-  payment_token: PaymentTokenModel
-  seller_amount: Decimal
-  total_amount: Decimal
-}
-
 input ApplicationSettingsInput {
   minting_interval_duration_in_min: String
   per_day_minting_limit: String
@@ -70,172 +63,6 @@ type BlockchainStaffModelEdge {
   node: BlockchainStaffModel!
 }
 
-type BuyOffer {
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  end_date: Date!
-  fee_amount: Decimal!
-  fee_percentage: Float!
-  id: Int!
-  item: Item
-  item_id: Int!
-  nonce: String!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-  royalty_address: String
-  royalty_amount: Decimal!
-  royalty_percentage: Float!
-  seller_amount: Decimal!
-  signature: String
-  start_date: Date!
-  status: Int!
-  total_amount: Decimal!
-  type: Int!
-  uid: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User
-  user_id: Int!
-}
-
-type BuyOfferConnection {
-  edges: [BuyOfferEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type BuyOfferEdge {
-  cursor: String!
-  node: BuyOffer!
-}
-
-type Category {
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  image: String
-  status: Int!
-  title: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-}
-
-type CategoryConnection {
-  edges: [CategoryEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type CategoryEdge {
-  cursor: String!
-  node: Category!
-}
-
-type Collection {
-  _count: Count
-  banner_image: String
-  blockchain: BlockchainModel
-  blockchain_id: Int!
-  category: Category
-  category_id: Int!
-  collection_watch_lists: [CollectionWatchList!]
-  contract_address: String
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  description: String
-  display_theme: Int!
-  feature_image: String
-  featured_collections: FeaturedCollectionList
-  id: Int!
-  is_featured: Int!
-  is_sensitive: Int!
-  items: [Item!]
-  logo: String!
-  metadata: CollectionModelMetadata
-  name: String!
-  payout_address: String
-  royalties: Float
-  slug: String!
-  status: Int!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User
-  user_id: Int
-  user_wallet_address: String
-  username: String
-}
-
-type CollectionConnection {
-  edges: [CollectionEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type CollectionEdge {
-  cursor: String!
-  node: Collection!
-}
-
-type CollectionModelMetadata {
-  floor_price: PriceConvertModel
-  native_token: PaymentTokenModel
-  owner_count: Int
-  volume: PriceConvertModel
-}
-
-input CollectionOrder {
-  direction: OrderDirection!
-  field: CollectionOrderField!
-}
-
-"""Properties by which collection connections can be ordered."""
-enum CollectionOrderField {
-  created_at
-  id
-  loyalties
-  name
-}
-
-type CollectionWatchList {
-  collection: Collection!
-  collection_id: Int!
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  status: Int!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User!
-  user_id: Int!
-}
-
-type CollectionWithMeta {
-  collection: Collection!
-  floor_price: PriceConvertModel
-  is_watched: Boolean!
-  itemCount: Int!
-  native_token: PaymentTokenModel
-  owner_count: Int
-  social_links: SocialLinkModel!
-  token_mappings: [PaymentTokenMappingModel!]!
-  volume: PriceConvertModel
-}
-
-type Count {
-  items: Int!
-}
-
-type CountModel {
-  """count"""
-  count: Int!
-}
-
 input CreateBlockChainDto {
   api_key: String
   currency_symbol: String!
@@ -251,56 +78,6 @@ input CreateBlockChainDto {
   slug: String!
   status: Int
   wss_url: String
-}
-
-input CreateBuyOfferDto {
-  amount: Float!
-  end_date: String!
-  item_id: Int!
-  nonce: String!
-  payment_token_id: Int!
-  signature: String
-  start_date: String!
-  type: Int!
-}
-
-input CreateCategoryDto {
-  imageFile: Upload
-  status: Int
-  title: String!
-}
-
-input CreateCollectionDto {
-  banner_image_file: Upload
-  blockchain_id: Int!
-  category_id: Int!
-  contract_address: String
-  description: String
-  discord_link: String
-  display_theme: Int!
-  feature_image_file: Upload
-  instagram_link: String
-  is_sensitive: Int!
-  logo_file: Upload!
-  medium_link: String
-  name: String!
-  payment_tokens: String
-  payout_address: String
-  royalties: Float!
-  slug: String
-  telegram_link: String
-  website_link: String
-}
-
-input CreateItemDto {
-  collection_id: Int!
-  description: String
-  external_url: String
-  is_unlockable_content: Int!
-  media_file: Upload!
-  name: String!
-  thumbnail_file: Upload
-  unlockable_content: String
 }
 
 input CreatePaymentTokenDto {
@@ -319,129 +96,11 @@ input CreatePaymentTokenDto {
   usd_rate: Float
 }
 
-input CreateSellOfferDto {
-  amount: Float!
-  end_date: String!
-  item_id: Int!
-  nonce: String!
-  payment_token_id: Int!
-  reserved_address: String
-  reserved_price: Int
-  signature: String
-  start_date: String!
-  type: Int!
-}
-
-type CreatorEarning {
-  collection: Collection
-  collection_id: Int!
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  exchange: Exchange
-  exchange_id: Int!
-  id: Int!
-  item: Item
-  item_id: Int!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-  royalty_address: String
-  royalty_amount: Decimal!
-  royalty_percentage: Float!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User
-  user_id: Int!
-}
-
-type CreatorEarningConnection {
-  edges: [CreatorEarningEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type CreatorEarningEdge {
-  cursor: String!
-  node: CreatorEarning!
-}
-
-type DashboardModel {
-  total_blockchain: Int
-  total_collection: Int
-  total_income: Float
-  total_item: Int
-  total_sale_amount: Float
-  total_sales: Int
-  total_sell_offer: Int
-  total_users: Int
-}
-
 """Date custom scalar type. Basically string"""
 scalar Date
 
-type DayWiseCountModel {
-  date: Date!
-  total_count: Int!
-}
-
-type DayWisePriceCountModel {
-  avg_price: Float!
-  date: Date!
-  sum_price: Float!
-}
-
 """Decimal custom scalar type. Basically string or number"""
 scalar Decimal
-
-type Exchange {
-  buy_offer: BuyOffer
-  buy_offer_id: Int
-  buyer: User
-  buyer_id: Int
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  item: Item
-  item_id: Int!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-  sell_offer: SellOffer
-  sell_offer_id: Int
-  seller: User
-  seller_id: Int
-  status: Int
-  total_amount: Decimal
-  transaction_hash: String
-  uid: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-}
-
-type ExchangeConnection {
-  edges: [ExchangeEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type ExchangeEdge {
-  cursor: String!
-  node: Exchange!
-}
-
-type FeaturedCollectionList {
-  collection_id: Int!
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  order: Int!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-}
 
 type FileObject {
   name: String!
@@ -497,191 +156,42 @@ input HomepageSettingsInput {
   video_url: String
 }
 
-type Item {
-  active_buy: BuyOffer
-  active_sell: SellOffer
-  buy_offers: [BuyOffer!]
-  collection: Collection
-  collection_id: Int!
-  created_at: Date!
-  creator: User
-  creator_id: Int!
-  description: String
-  exchange_in_progress: Exchange
-  exchanges: [Exchange!]
-  external_url: String
-  filetype: String!
-  highest_bid: BuyOffer
-  id: Int!
-  is_minted: Int!
-  is_unlockable_content: Int
-  item_activities: [ItemActivity!]
-  item_favourite_lists: [ItemFavouriteList!]
-  like_count: Int!
-  media_path: String
-  minted_at: Date
-  name: String!
-  owner: User
-  owner_id: Int!
-  owner_name: String
-  payment_token: PaymentTokenModel
-  payment_token_id: Int
-  price: Decimal!
-  prices: [Price!]
-  sell_offers: [SellOffer!]
-  slug: String!
-  status: Int!
-  thumbnail_path: String
-  token_id: String
-  token_uri: String
-  unlockable_content: String
-  updated_at: Date
-  view_count: Int!
-}
-
-type ItemActivitiesConnection {
-  edges: [ItemActivityEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type ItemActivity {
-  amount: String
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  event: Int!
-  from: User
-  from_id: Int!
-  hash: String
-  id: Int!
-  item: Item
-  item_id: Int!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-  status: Int!
-  to: User
-  to_id: Int
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-}
-
-type ItemActivityEdge {
-  cursor: String!
-  node: ItemActivity!
-}
-
-type ItemConnection {
-  edges: [ItemEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type ItemEdge {
-  cursor: String!
-  node: Item!
-}
-
-type ItemFavouriteList {
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  item: Item
-  item_id: Int!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User
-  user_id: Int!
-}
-
-input ItemOrder {
-  direction: OrderDirection!
-  field: ItemOrderField!
-}
-
-"""Properties by which Item connections can be ordered."""
-enum ItemOrderField {
-  id
-  most_favourite
-  price
-  recently_created
-  view
-}
-
-type MaxFeaturedCollectionOrderDto {
-  max_order: Int!
-}
-
 type Mutation {
   StaffLogin(data: StaffLoginInput!): Token!
-  acceptOffer(offerId: Int!): Exchange!
-  addStaffCollectionToFeatured(collection_id: Int!, order: Int!): ResponseModel!
   adminFileUpload(file: Upload!): FileObject!
   applicationSettingsSave(data: ApplicationSettingsInput!): ResponseModel!
-  buyNow(offerId: Int!): Exchange!
-  cancelBuyOffer(sell_uid: String!): ResponseModel!
-  cancelExchange(exchangeId: Int!): ResponseModel!
-  cancelSellOffer(sell_uid: String!): ResponseModel!
-  cancelTransfer(transfer_id: Int!): ResponseModel!
   changePassword(data: ResetPasswordInput!): ResponseMessageWithStatusModel!
   changeStaffPassword(data: ResetPasswordInput!): ResponseModel!
-  collectionWatchListToggle(collectionId: Int!): ResponseModel!
   createBlockchain(data: CreateBlockChainDto!): ResponseModel!
-  createBuyOffer(data: CreateBuyOfferDto!): BuyOffer!
-  createCategory(data: CreateCategoryDto!): ResponseModel!
-  createCollection(data: CreateCollectionDto!): Collection!
-  createItem(data: CreateItemDto!): Item!
   createPaymentToken(data: CreatePaymentTokenDto!): ResponseModel!
   createRole(data: roleInput!): ResponseModel!
-  createSellOffer(data: CreateSellOfferDto!): SellOffer!
   createStaff(data: StaffCreateInput!): ResponseModel!
-  createTransfer(item_id: Int!, to_address: String!): Transfer!
   deleteBlockchain(id: Int!): ResponseModel!
-  deleteCategory(id: Int!): ResponseModel!
-  deleteCollection(collectionId: Int!): ResponseModel!
   deletePaymentToken(id: Int!): ResponseModel!
   deleteRole(id: Int!): ResponseModel!
   deleteStaff(id: Int!): ResponseModel!
-  finishExchang(exchangeId: Int!, transactionHash: String!): ResponseModel!
-  finishTransfer(transaction_hash: String!, transfer_id: Int!): ResponseModel!
   generalSettingsSave(data: generalSettingsInput!): ResponseModel!
   generateLoginMessage(wallet_address: String!): WalletLoginMessage!
   homepageSettingsSave(data: HomepageSettingsInput!): ResponseModel!
-  itemFavouriteListToggle(item_id: Int!): CountModel!
-  itemReMint(activity_id: Int!): ResponseModel!
-  itemViewCount(item_id: Int!): CountModel!
   logoSettingsSave(data: logoSettingsInput!): ResponseModel!
   mailSettingsSave(data: mailSettingsInput!): ResponseModel!
   refreshToken(token: String!): Token!
-  removeStaffCollectionFromFeatured(collection_id: Int!): ResponseModel!
   resendVerifcationEmail: ResponseModel!
-  saveNewsLetterSubscription(email: String!): ResponseModel!
   sendForgetPasswordMail(email: String!): ResponseMessageWithStatusModel!
   sendStaffForgetPasswordMail(email: String!): ResponseModel!
   socialSettingsSave(data: socialSettingsInput!): ResponseModel!
-  syncItemOwner(item_id: Int!): ResponseModel!
   syncUsdRates: ResponseModel!
   updateBlockchain(data: UpdateBlockChainDto!, id: Int!): ResponseModel!
   updateBlockchainStatus(id: Int!, status: Int!): ResponseModel!
-  updateCategory(data: UpdateCategoryDto!, id: Int!): ResponseModel!
-  updateCollection(data: UpdateCollectionDto!, id: Int!): Collection!
-  updateItem(data: UpdateItemDto!, id: Int!): Item!
-  updateItemStatus(id: Int!, status: Int!): ResponseModel!
   updatePaymentToken(data: UpdatePaymentTokenDto!, id: Int!): ResponseModel!
   updatePaymentTokenStatus(id: Int!, status: Int!): ResponseModel!
   updateProfile(data: UpdateProfileInput!): ResponseModel!
   updateRole(data: roleInput!, id: Int!): ResponseModel!
   updateStaff(data: StaffUpdateInput!, id: Int!): ResponseModel!
-  updateStaffCollectionStatus(id: Int!, status: Int!): ResponseModel!
-  updateStaffFeaturedCollectionOrder(collection_id: Int!, order: Int!): ResponseModel!
   updateStaffPassword(data: UpdatePasswordInput!): ResponseModel!
   updateStaffProfile(data: StaffUpdateInput!): ResponseModel!
-  updateUserStatus(id: Int!, status: Int!): ResponseModel!
   uploadFile(file: Upload!): FileObject!
   usefulLinkSettingsSave(data: UsefulLinkSettingsInput!): ResponseModel!
-  userNotificationSettingSave(data: UserNotificationSettingDto!): ResponseModel!
   userVerifyMail(verificationCode: String!): ResponseModel!
   walletLogin(data: WalletLoginInput!): Token!
 }
@@ -689,26 +199,6 @@ type Mutation {
 type NativeNwrapTokenModel {
   native_token: PaymentTokenModel
   wrap_token: PaymentTokenModel
-}
-
-type NftList {
-  ownedNfts: [ownedNft!]!
-  pageKey: String
-  totalCount: Int!
-}
-
-type NotificationEventModel {
-  description: String
-  id: Int!
-  status: Int!
-  title: String
-}
-
-type NotificationSettingModel {
-  events: String
-  id: Int!
-  user: User
-  user_id: Int!
 }
 
 input Order {
@@ -724,11 +214,6 @@ enum OrderDirection {
   desc
 }
 
-type OrderType {
-  name: String!
-  type: String!
-}
-
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -740,10 +225,6 @@ type PaymentTokenConnection {
   edges: [PaymentTokenModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int
-}
-
-type PaymentTokenMappingModel {
-  payment_token: PaymentTokenModel!
 }
 
 type PaymentTokenModel {
@@ -780,138 +261,30 @@ enum PaymentTokenOrderField {
   name
 }
 
-type Price {
-  amount: Decimal!
-
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  id: Int!
-  item: Float
-  item_id: Int!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-}
-
-type PriceCalculationModel {
-  day_wise_price_count: [DayWisePriceCountModel!]!
-  total_avg_price: Float!
-  total_sum_price: Float!
-}
-
-type PriceConvertModel {
-  native_price: Float
-  usd_price: Float
-}
-
 type Query {
-  ItemDetailsBySlugOrTokenId(slugOrTokenId: String!, viewer_id: Int, viewer_wallet_address: String): Item!
   adminFileList: [FileObject!]!
-  checkCollectionWatchedByUser(collection_id: Int!, user_id: Int, user_wallet_address: String): Boolean!
-  checkItemFavouriteByUser(item_id: Int!, viewer_id: Int, viewer_wallet_address: String): Boolean!
-  checkUniqueCollection(id: Int, name: String, slug: String): ResponseModel!
-  checkUniqueItem(id: Int, name: String!): ResponseModel!
   checkUniqueUser(email: String, username: String, wallet_address: String!): ResponseModel!
-  collectionsByAddress(wallet_address: String!): [Collection!]!
-
-  """collections for item create"""
-  collectionsForItem(wallet_address: String!): [Collection!]!
   getAccount(address_or_username: String!): User!
   getAccountByAddress(wallet_address: String!): User!
-  getAccountListsPaginate(after: String, before: String, first: Int, last: Int, query: String, skip: Int, totalItem: Int, withItem: Boolean): UserConnection!
-  getActiveSellOfferLists(after: String, before: String, first: Int, last: Int, skip: Int): SellOfferConnection!
   getBlockchainById(id: Int!): BlockchainStaffModel!
   getBlockchainDetails(chain_id: Int, id: Int): BlockchainModel
   getBlockchainLists(status: Int): [BlockchainModel!]!
-  getBuyOfferById(offerId: Int!): BuyOffer!
-  getCategories(status: Int): [Category!]!
-  getCategoryById(id: Int!): Category!
-  getCategoryList(after: String, before: String, first: Int, last: Int, orderBy: Order, paginateNumber: Int, query: String, skip: Int, status: Int): CategoryConnection!
-  getCollectionDetails(slug: String!, user_id: Int, user_wallet_address: String): CollectionWithMeta!
-  getCollectionListsPaginate(after: String, before: String, category_id: Int, first: Int, last: Int, orderBy: CollectionOrder, query: String, skip: Int, totalItem: Int, user_id: Int, withItem: Boolean): CollectionConnection!
-  getCreatorEarningListPaginate(after: String, before: String, collection_id: Int, first: Int, last: Int, skip: Int, user_id: Int): CreatorEarningConnection!
-  getDashboardData: DashboardModel!
-  getDataForSignBuyOffer(data: CreateBuyOfferDto!): SigDataModel!
-  getDataForSignSellOffer(data: CreateSellOfferDto!): SigDataModel!
-  getDayWiseCollectionPrice(collection_id: Int!, days: String!): PriceCalculationModel
-  getDayWiseItemPrice(days: String!, item_id: Int!): PriceCalculationModel
-  getDayWiseSalesCount: [DayWiseCountModel!]!
-  getDayWiseUserCount: [DayWiseCountModel!]!
-  getFeaturedCollectionList(limit: Int): [Collection!]!
-  getFeeByPaymentToken: [AmountCalculationModel!]
-  getItemActivities(events: String, item_id: Int!): [ItemActivity!]!
-  getItemActivitiesPaginate(after: String, before: String, blockchain_id: [Int!], collection_id: [Int!], event_type: [Int!], first: Int, item_id: Int, last: Int, query: String, skip: Int, user_id: Int): ItemActivitiesConnection!
-  getItemLists(after: String, before: String, blockchain_id: [Int!], category_id: [Int!], collection_id: [Int!], creator_id: Int, first: Int, last: Int, max_price: Float, min_price: Float, orderBy: ItemOrder, owner_id: Int, payment_token_id: [Int!], query: String, skip: Int, status: [Int!], viewer_id: Int, viewer_wallet_address: String): ItemConnection!
-  getItemUnlockAbleContent(item_slug: String!): String!
   getItemsTokens(item_id: Int!): [PaymentTokenModel!]!
   getNativeNwrapToken(blockchain_id: Int, chain_id: Int): NativeNwrapTokenModel!
-  getNftsTest: NftList!
-  getNotificationSettings: NotificationSettingModel
-  getNotificationSettingsEvent: [NotificationEventModel!]!
   getPaymentTokenById(id: Int!): PaymentTokenModel!
-  getRankingList(blockchain_id: Int, days: Int!, limit: Int): [Ranking!]!
   getRole(id: Int!): Role!
   getRoles(orderBy: RoleOrder, query: String): [Role!]!
-  getSellOfferLists(after: String, before: String, first: Int, last: Int, skip: Int, type: Int, user_id: Int): SellOfferConnection!
-  getSellOfferListsByUser(after: String, before: String, first: Int, last: Int, skip: Int, status: Int!, user_id: Int, user_wallet_address: String): SellOfferConnection!
   getSettingsData(optionGroup: [String!]): [Setting!]!
   getStaff(id: Int!): Staff!
   getStaffBlockchainListPaginate(after: String, before: String, first: Int, last: Int, orderBy: Order, query: String, skip: Int, status: Int): BlockchainStaffConnection!
-  getStaffCollectionListsPaginate(after: String, before: String, category_id: Int, first: Int, last: Int, orderBy: CollectionOrder, query: String, skip: Int, user_id: Int): CollectionConnection!
-  getStaffFeaturedCollectionListPaginate(after: String, before: String, category_id: Int, first: Int, last: Int, query: String, skip: Int, user_id: Int): CollectionConnection!
-  getStaffFeaturedCollectionMaxOrder: MaxFeaturedCollectionOrderDto!
-  getStaffItemActivitiesPaginate(after: String, before: String, blockchain_id: [Int!], collection_id: [Int!], event_type: [Int!], first: Int, item_id: Int, last: Int, query: String, skip: Int, user_id: Int): ItemActivitiesConnection!
-  getStaffItemListsPaginate(after: String, before: String, blockchain_id: [Int!], category_id: [Int!], collection_id: [Int!], creator_id: Int, first: Int, last: Int, max_price: Float, min_price: Float, orderBy: ItemOrder, owner_id: Int, payment_token_id: [Int!], query: String, skip: Int, status: [Int!]): ItemConnection!
   getStaffLists(after: String, before: String, first: Int, last: Int, orderBy: StaffOrder, paginateNumber: Int, query: String, skip: Int): StaffConnection!
-  getStaffNotFeaturedCollectionLists: [Collection!]!
   getStaffPaymentTokenListPaginate(after: String, before: String, blockchain_id: Int, chain_id: Int, collection_id: Int, first: Int, last: Int, orderBy: Order, query: String, skip: Int, status: Int): PaymentTokenConnection!
-  getStaffSalesDataPaginate(after: String, before: String, first: Int, last: Int, query: String, skip: Int): ExchangeConnection!
-  getStaffSingleItemBySlugOrTokenId(slugOrTokenId: String!): Item!
-  getStaffUserById(id: Int!): User!
-  getStaffUserListsPaginate(after: String, before: String, first: Int, last: Int, orderBy: UserOrder, query: String, skip: Int, status: Int): UserConnection!
   getTokenLists(blockchain_id: Int, chain_id: Int): [PaymentTokenModel!]!
   getTokenListsPaginate(after: String, before: String, blockchain_id: Int, chain_id: Int, collection_id: Int, first: Int, last: Int, orderBy: PaymentTokenOrder, query: String, skip: Int, status: Int): PaymentTokenConnection!
-  getTopCollectionList(limit: Int): [Collection!]!
-  getTransferList(from_user_id: Int, to_user_id: Int): [Transfer!]!
-  getTrendingCollectionList(limit: Int): [Collection!]!
-  getTrendingItemList(limit: Int, viewer_id: Int, viewer_wallet_address: String): [Item!]!
-  getUserBuyOfferLists(after: String, before: String, collection_id: Int, first: Int, last: Int, offer_maker_id: Int, offer_receiver_id: Int, skip: Int): BuyOfferConnection!
   getUserByToken: User!
-  getUserItemFavouriteLists(after: String, before: String, first: Int, last: Int, skip: Int, viewer_id: Int, viewer_wallet_address: String): ItemConnection!
-  globalSearch(limit: Int, query: String!): SearchModel!
-  itemBuyOfferList(item_id: Int!): [BuyOffer!]!
   listFile: [FileObject!]!
   me: User!
-  myCollectionWatchList(after: String, before: String, first: Int, last: Int, skip: Int): CollectionConnection!
   staff: Staff!
-}
-
-type Ranking {
-  blockchain_id: Int!
-  collection: Collection
-  collection_id: Int!
-  created_at: Date!
-  floor_price_in_native: Decimal
-  floor_price_in_usd: Decimal
-  id: Int!
-  item_count: Int!
-  native_token: PaymentTokenModel
-  native_token_id: Int!
-  one_day_volume_in_native: Decimal
-  one_day_volume_in_usd: Decimal
-  one_day_volume_percent: Float
-  seven_days_volume_in_native: Decimal
-  seven_days_volume_in_usd: Decimal
-  seven_days_volume_percent: Float
-  thirty_days_volume_in_native: Decimal
-  thirty_days_volume_in_usd: Decimal
-  thirty_days_volume_percent: Float
-  total_volume_in_native: Decimal
-  total_volume_in_usd: Decimal
-  updated_at: Date
-  user: PaymentTokenModel
 }
 
 input ResetPasswordInput {
@@ -956,80 +329,12 @@ input RoleOrder {
   field: String!
 }
 
-type SearchModel {
-  account: [User!]
-  collection: [Collection!]
-  item: [Item!]
-}
-
-type SellOffer {
-  """Identifies the date and time when the object was created."""
-  created_at: Date!
-  end_date: Date!
-  fee_amount: Decimal!
-  fee_percentage: Float!
-  id: Int!
-  item: Item
-  item_id: Int!
-  nonce: String!
-  payment_token: PaymentTokenModel
-  payment_token_id: Int!
-  reserved_address: String
-  reserved_price: Decimal
-  royalty_address: String
-  royalty_amount: Decimal!
-  royalty_percentage: Float!
-  seller_amount: Decimal!
-  signature: String
-  start_date: Date!
-  status: Int!
-  total_amount: Decimal!
-  type: Int!
-  uid: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: Date!
-  user: User
-  user_id: Int!
-}
-
-type SellOfferConnection {
-  edges: [SellOfferEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type SellOfferEdge {
-  cursor: String!
-  node: SellOffer!
-}
-
 type Setting {
   id: Int!
   option_group: String
   option_key: String!
   option_value: String
   value_type: Int
-}
-
-type SigDataModel {
-  domainData: domainData!
-  offerValue: offerValue!
-  type: type!
-}
-
-type SocialLinkModel {
-  discord_link: String
-  facebook_link: String
-  id: Int!
-  instagram_link: String
-  linkedin_link: String
-  medium_link: String
-  model_id: Int!
-  model_type: Int!
-  telegram_link: String
-  website_link: String
-  whatsapp_link: String
 }
 
 type Staff {
@@ -1110,22 +415,6 @@ type Token {
   refreshToken: String!
 }
 
-type Transfer {
-  created_at: Date!
-  id: Int!
-  item: Item
-  item_id: Int!
-  status: Int!
-  to_address: String!
-  to_user: User
-  to_user_id: Int!
-  transaction_hash: String
-  uid: String!
-  updated_at: Date!
-  user: User
-  user_id: Int!
-}
-
 input UpdateBlockChainDto {
   api_key: String
   currency_symbol: String!
@@ -1141,40 +430,6 @@ input UpdateBlockChainDto {
   slug: String!
   status: Int
   wss_url: String
-}
-
-input UpdateCategoryDto {
-  imageFile: Upload
-  status: Int
-  title: String!
-}
-
-input UpdateCollectionDto {
-  banner_image_file: Upload
-  category_id: Int!
-  contract_address: String
-  description: String
-  discord_link: String
-  display_theme: Int!
-  feature_image_file: Upload
-  instagram_link: String
-  is_sensitive: Int!
-  logo_file: Upload
-  medium_link: String
-  name: String!
-  payment_tokens: String
-  payout_address: String
-  royalties: Float!
-  slug: String
-  telegram_link: String
-  website_link: String
-}
-
-input UpdateItemDto {
-  description: String
-  external_url: String
-  is_unlockable_content: Int!
-  unlockable_content: String
 }
 
 input UpdatePasswordInput {
@@ -1230,56 +485,23 @@ input UsefulLinkSettingsInput {
 type User {
   banner_img: String
   bio: String
-  collections: [Collection!]
-  createdItems: [Item!]
 
   """Identifies the date and time when the object was created."""
   created_at: Date!
   email: String
   email_verified_at: Date
-  exchangesAsBuyer: [Exchange!]
-  exchangesAsSeller: [Exchange!]
   id: Int!
   is_email_verified: Int
   name: String
-  notfication_settings: NotificationSettingModel
-  ownedItems: [Item!]
   phone: String
   profile_img: String
   reset_code: String
-  social_links: SocialLinkModel
   status: Int
 
   """Identifies the date and time when the object was last updated."""
   updated_at: Date!
   username: String
   wallet_address: String!
-}
-
-type UserConnection {
-  edges: [UserEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-type UserEdge {
-  cursor: String!
-  node: User!
-}
-
-input UserNotificationSettingDto {
-  events: [Int!]
-}
-
-input UserOrder {
-  direction: OrderDirection!
-  field: UserOrderField!
-}
-
-"""Properties by which User connections can be ordered."""
-enum UserOrderField {
-  id
-  name
 }
 
 input WalletLoginInput {
@@ -1291,13 +513,6 @@ input WalletLoginInput {
 type WalletLoginMessage {
   login_message: String
   nonce: String!
-}
-
-type domainData {
-  chainId: Int!
-  name: String!
-  verifyingContract: String!
-  version: String!
 }
 
 input generalSettingsInput {
@@ -1327,30 +542,6 @@ input mailSettingsInput {
   mail_username: String
 }
 
-type offerValue {
-  _buyer: String
-  _expiresAt: Int!
-  _feeAmount: String!
-  _nftContract: String!
-  _nftTokenId: String!
-  _nonce: String!
-  _paymentTokenContract: String!
-  _royaltyAmount: String!
-  _royaltyPayTo: String!
-  _seller: String
-  _sellerAmount: String!
-  _startsAt: Int!
-  _totalAmount: String!
-}
-
-type ownedNft {
-  description: String
-  id: String
-  image: String
-  title: String
-  tokenUri: String
-}
-
 input roleInput {
   name: String!
   permissions: String
@@ -1363,9 +554,4 @@ input socialSettingsInput {
   linkedin_link: String
   twitter_link: String
   whatsapp_link: String
-}
-
-type type {
-  BuyOrder: [OrderType!]
-  SellOrder: [OrderType!]
 }

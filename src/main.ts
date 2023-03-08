@@ -14,7 +14,6 @@ import * as passport from 'passport';
 import f = require('session-file-store');
 import { Console } from 'console';
 import { DEFAULT_MAX_FILES_AT_A_TIME } from './app/helpers/coreconstants';
-import { events } from './app/events/events';
 import * as Sentry from '@sentry/node';
 import { SentryInterceptor } from './app/interceptors/sentry.interceptor';
 
@@ -25,7 +24,6 @@ async function bootstrap() {
     logger: console,
   });
   setApp(app);
-  events();
 
   app.set('trust proxy', true);
 
