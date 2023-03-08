@@ -23,11 +23,7 @@ import {
   __,
 } from 'src/app/helpers/functions';
 import { WalletLoginMessage } from './dto/login.input';
-import {
-  LOGIN_MESSAGE,
-  MODEL_TYPE_USER,
-  STATUS_ACTIVE,
-} from 'src/app/helpers/coreconstants';
+import { LOGIN_MESSAGE, STATUS_ACTIVE } from 'src/app/helpers/coreconstants';
 import { prisma_client } from 'src/app/helpers/functions';
 import Web3 from 'web3';
 const web3 = require('web3');
@@ -108,14 +104,6 @@ export class UserAuthService
       } else {
         checkUserStatus(user);
       }
-      user['social_links'] = user
-        ? await prisma_client.socialLinks.findFirst({
-            where: {
-              model_id: user.id,
-              model_type: MODEL_TYPE_USER,
-            },
-          })
-        : null;
       return user;
     } catch (e) {
       processException(e);
@@ -158,14 +146,6 @@ export class UserAuthService
       } else {
         checkUserStatus(user);
       }
-      user['social_links'] = user
-        ? await prisma_client.socialLinks.findFirst({
-            where: {
-              model_id: user.id,
-              model_type: MODEL_TYPE_USER,
-            },
-          })
-        : null;
       return user;
     } catch (e) {
       processException(e);
