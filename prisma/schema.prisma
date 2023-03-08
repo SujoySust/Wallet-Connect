@@ -20,19 +20,6 @@ generator client {
 //}
 
 
-model Category {
-  id         Int      @id @default(autoincrement())
-  title      String   @unique @db.VarChar(255)
-  image      String?  @db.VarChar(500)
-  status     Int      @default(1)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  collections Collection[]
-
-  @@map("categories")
-}
-
 model User {
   id                Int       @id @default(autoincrement())
   wallet_address    String    @unique @db.VarChar(255)
@@ -51,23 +38,7 @@ model User {
   updated_at        DateTime  @updatedAt
 
   login_nonces           WalletLoginNonce[]
-  collections            Collection[]
-  collection_watch_lists CollectionWatchList[]
-  creator_earnings       CreatorEarning[]
-  ownedItems             Item[]                @relation("myOwnedItems")
-  createdItems           Item[]                @relation("myCreatedItems")
-  activitesFromMe        ItemActivity[]        @relation("fromTX")
-  activitiesToMe         ItemActivity[]        @relation("toTX")
-  buy_offers             BuyOffer[]
-  sell_offers            SellOffer[]
-  exchangesAsSeller      Exchange[]            @relation("seller")
-  exchangesAsBuyer       Exchange[]            @relation("buyer")
-  item_favourite_lists   ItemFavouriteList[]
-  notification_settings  NotificationSetting?
-  ranking                Ranking[]
 
-  transfersFromMe Transfer[]
-  transfersToMe   Transfer[] @relation("to_user")
   @@map("users")
 }
 
@@ -80,53 +51,6 @@ model WalletLoginNonce {
 
   user User @relation(fields: [user_id], references: [id])
   @@map("wallet_login_nonces")
-}
-
-model Collection {
-  id      Int @id @default(autoincrement())
-  user_id Int
-
-  name             String   @unique @db.VarChar(255)
-  slug             String   @unique @db.VarChar(255)
-  contract_address String?  @db.VarChar(255)
-  description      String?  @db.Text
-  logo             String   @db.VarChar(255)
-  feature_image    String?  @db.VarChar(255)
-  banner_image     String?  @db.VarChar(255)
-  category_id      Int
-  royalties        Float    @default(0)
-  payout_address   String?  @db.VarChar(255)
-  blockchain_id    Int
-  display_theme    Int      @default(0) @db.SmallInt
-  is_sensitive     Int      @default(0) @db.SmallInt
-  is_featured      Int      @default(0) @db.SmallInt
-  status           Int      @default(1) @db.SmallInt
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-
-  items                  Item[]
-  collection_watch_lists CollectionWatchList[]
-  creator_earnings       CreatorEarning[]
-  user                   User                  @relation(fields: [user_id], references: [id])
-  blockchain             Blockchain            @relation(fields: [blockchain_id], references: [id])
-  category               Category              @relation(fields: [category_id], references: [id])
-  ranking                Ranking?
-  payment_token_mappings PaymentTokenMapping[]
-  featured_collections FeaturedCollection?
-
-  @@map("collections")
-}
-
-model FeaturedCollection{
-  id Int @id @default(autoincrement())
-  collection_id Int @unique
-  order Int
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @updatedAt
-
-  collection        Collection  @relation(fields: [collection_id], references: [id])
-
-  @@map("featured_collections")
 }
 
 model Blockchain {
@@ -148,7 +72,6 @@ model Blockchain {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 
-  collections    Collection[]
   payment_tokens PaymentToken[]
   status         Int            @default(1) @db.SmallInt
 
@@ -174,274 +97,9 @@ model PaymentToken {
   updated_at                    DateTime? @updatedAt
 
   blockchain             Blockchain            @relation(fields: [blockchain_id], references: [id])
-  payment_token_mappings PaymentTokenMapping[]
-  buy_offers             BuyOffer[]
-  sell_offers            SellOffer[]
-  exchanges              Exchange[]
-  item_activities        ItemActivity[]
-  items                  Item[]
-  creator_earnings       CreatorEarning[]
-  prices                 Price[]
-  ranking                Ranking[]
 
   @@unique([blockchain_id, contract_address])
   @@map("payment_tokens")
-}
-
-model PaymentTokenMapping {
-  id               Int          @id @default(autoincrement())
-  collection_id    Int
-  payment_token_id Int
-  payment_token    PaymentToken @relation(fields: [payment_token_id], references: [id])
-  collection       Collection   @relation(fields: [collection_id], references: [id])
-
-  @@map("payment_token_mappings")
-}
-
-model SocialLinks {
-  id             Int     @id @default(autoincrement())
-  model_id       Int
-  model_type     Int     @db.SmallInt
-  website_link   String? @db.VarChar(255)
-  discord_link   String? @db.VarChar(255)
-  instagram_link String? @db.VarChar(255)
-  medium_link    String? @db.VarChar(255)
-  telegram_link  String? @db.VarChar(255)
-  facebook_link  String? @db.VarChar(255)
-  whatssapp_link String? @db.VarChar(255)
-  linkedin_link  String? @db.VarChar(255)
-
-  @@map("social_links")
-}
-
-model Item {
-  id                    Int       @id @default(autoincrement())
-  name                  String    @unique
-  slug                  String    @unique
-  description           String?   @db.Text
-  external_url          String?   @db.VarChar(255)
-  media_path            String    @db.VarChar(255)
-  thumbnail_path        String?   @db.VarChar(255)
-  filetype              String    @default("image") @db.VarChar(40)
-  token_uri             String?   @db.VarChar(255)
-  token_id              String?   @db.VarChar(255)
-  view_count            Int       @default(0)
-  like_count            Int       @default(0)
-  price                 Decimal   @default(0) @db.Decimal(65, 30)
-  payment_token_id      Int?
-  is_unlockable_content Int       @default(0) @db.SmallInt
-  unlockable_content    String?
-  collection_id         Int
-  owner_id              Int
-  creator_id            Int
-  is_minted             Int       @default(0) @db.SmallInt
-  status                Int       @default(1) @db.SmallInt
-  minted_at             DateTime?
-  created_at            DateTime  @default(now())
-  updated_at            DateTime  @updatedAt
-
-  collection           Collection          @relation(fields: [collection_id], references: [id])
-  payment_token        PaymentToken?       @relation(fields: [payment_token_id], references: [id])
-  owner                User                @relation("myOwnedItems", fields: [owner_id], references: [id])
-  creator              User                @relation("myCreatedItems", fields: [creator_id], references: [id])
-  buy_offers           BuyOffer[]
-  sell_offers          SellOffer[]
-  exchanges            Exchange[]
-  item_activities      ItemActivity[]
-  creator_earnings     CreatorEarning[]
-  item_favourite_lists ItemFavouriteList[]
-  prices               Price[]
-
-  transfers Transfer[]
-  @@map("items")
-}
-
-// model ItemProperty {
-//   id     Int    @id @default(autoincrement())
-//   itemId Int    @map("item_id")
-//   type   String
-//   name   String
-//   //  item   Item   @relation(fields: [itemId], references: [id])
-
-//   @@map("item_propertise")
-// }
-
-// model ItemLevel {
-//   id      Int    @id @default(autoincrement())
-//   itemId  Int    @map("item_id")
-//   name    String
-//   value   Float  @default(0)
-//   valueof Float  @default(0)
-//   //  item    Item   @relation(fields: [itemId], references: [id])
-
-//   @@map("item_levels")
-// }
-
-// model ItemStat {
-//   id      Int    @id @default(autoincrement())
-//   itemId  Int    @map("item_id")
-//   name    String
-//   value   Float  @default(0)
-//   valueof Float  @default(0)
-//   //  item    Item   @relation(fields: [itemId], references: [id])
-
-//   @@map("item_stats")
-// }
-
-model ItemActivity {
-  id               Int      @id @default(autoincrement())
-  item_id          Int
-  from_id          Int?
-  to_id            Int?
-  hash             String?
-  amount           String?
-  payment_token_id Int?
-  event            Int      @db.SmallInt
-  status           Int      @default(1) @db.SmallInt
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-
-  payment_token PaymentToken? @relation(fields: [payment_token_id], references: [id])
-  item          Item          @relation(fields: [item_id], references: [id])
-  from          User?         @relation("fromTX", fields: [from_id], references: [id])
-  to            User?         @relation("toTX", fields: [to_id], references: [id])
-
-  @@map("item_activities")
-}
-
-model Price {
-  id               Int      @id @default(autoincrement())
-  item_id          Int
-  amount           Decimal  @db.Decimal(65, 30)
-  payment_token_id Int
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-
-  payment_token PaymentToken @relation(fields: [payment_token_id], references: [id])
-  item          Item         @relation(fields: [item_id], references: [id])
-
-  @@map("prices")
-}
-
-model BuyOffer {
-  id                 Int       @id @default(autoincrement())
-  uid                String    @unique @db.VarChar(64)
-  signature          String?   @db.VarChar(255)
-  nonce              String    @db.VarChar(255)
-  type               Int       @db.SmallInt
-  item_id            Int
-  user_id            Int
-  payment_token_id   Int
-  total_amount       Decimal   @default(0) @db.Decimal(65, 30)
-  seller_amount      Decimal   @default(0) @db.Decimal(65, 30)
-  fee_percentage     Float     @default(0)
-  fee_amount         Decimal   @default(0) @db.Decimal(65, 30)
-  royalty_address    String?   @db.VarChar(255)
-  royalty_percentage Float     @default(0)
-  royalty_amount     Decimal   @default(0) @db.Decimal(65, 30)
-  // sell_offer_id      Int?      @unique
-  start_date         DateTime?
-  end_date           DateTime?
-  status             Int       @db.SmallInt
-  created_at         DateTime  @default(now())
-  updated_at         DateTime  @updatedAt
-
-  item          Item          @relation(fields: [item_id], references: [id])
-  user          User          @relation(fields: [user_id], references: [id])
-  payment_token PaymentToken? @relation(fields: [payment_token_id], references: [id])
-  // sell_offer    SellOffer?    @relation(fields: [sell_offer_id], references: [id])
-  exchanges     Exchange[]
-  @@map("buy_offers")
-}
-
-model SellOffer {
-  id                 Int      @id @default(autoincrement())
-  uid                String   @unique @db.VarChar(64)
-  signature          String?  @db.VarChar(255)
-  nonce              String   @db.VarChar(255)
-  type               Int      @db.SmallInt
-  item_id            Int
-  user_id            Int
-  payment_token_id   Int
-  total_amount       Decimal  @default(0) @db.Decimal(65, 30)
-  seller_amount      Decimal  @default(0) @db.Decimal(65, 30)
-  fee_percentage     Float    @default(0)
-  fee_amount         Decimal  @default(0) @db.Decimal(65, 30)
-  royalty_address    String?  @db.VarChar(255)
-  royalty_percentage Float    @default(0)
-  royalty_amount     Decimal  @default(0) @db.Decimal(65, 30)
-  start_date         DateTime
-  end_date           DateTime
-  status             Int      @db.SmallInt
-  reserved_address   String?  @db.VarChar(255)
-  reserved_price     Decimal? @db.Decimal(65, 30)
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
-
-  item          Item?         @relation(fields: [item_id], references: [id])
-  user          User?         @relation(fields: [user_id], references: [id])
-  payment_token PaymentToken? @relation(fields: [payment_token_id], references: [id])
-  // buy_offer     BuyOffer?
-  exchanges     Exchange[]
-  @@map("sell_offers")
-}
-
-model Exchange {
-  id               Int      @id @default(autoincrement())
-  uid              String   @unique @db.VarChar(64)
-  item_id          Int
-  payment_token_id Int
-  sell_offer_id    Int?
-  buy_offer_id     Int?
-  seller_id        Int?
-  buyer_id         Int?
-  total_amount     Decimal  @default(0) @db.Decimal(65, 30)
-  transaction_hash String?  @db.VarChar(255)
-  status           Int      @default(0) @db.SmallInt
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-
-  sell_offer      SellOffer?       @relation(fields: [sell_offer_id], references: [id])
-  buy_offer       BuyOffer?        @relation(fields: [buy_offer_id], references: [id])
-  seller          User?            @relation("seller", fields: [seller_id], references: [id])
-  buyer           User?            @relation("buyer", fields: [buyer_id], references: [id])
-  item            Item?            @relation(fields: [item_id], references: [id])
-  payment_token   PaymentToken?    @relation(fields: [payment_token_id], references: [id])
-  creatorEarnings CreatorEarning[]
-
-  @@map("exchanges")
-}
-
-model Transfer {
-  id               Int      @id @default(autoincrement())
-  uid              String   @unique @db.VarChar(64)
-  item_id          Int
-  user_id          Int
-  to_address       String
-  to_user_id       Int?
-  transaction_hash String?  @db.VarChar(255)
-  status           Int      @default(0) @db.SmallInt
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
-
-  user    User? @relation(fields: [user_id], references: [id])
-  to_user User? @relation("to_user", fields: [to_user_id], references: [id])
-  item    Item? @relation(fields: [item_id], references: [id])
-  @@map("transfers")
-}
-
-model CollectionWatchList {
-  id            Int      @id @default(autoincrement())
-  collection_id Int
-  user_id       Int
-  status        Int      @default(1)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  collection Collection @relation(fields: [collection_id], references: [id])
-  user       User       @relation(fields: [user_id], references: [id])
-
-  @@map("collection_watch_lists")
 }
 
 model Staff {
@@ -486,60 +144,6 @@ model Setting {
   @@map("settings")
 }
 
-model CreatorEarning {
-  id                 Int      @id @default(autoincrement())
-  exchange_id        Int
-  collection_id      Int
-  user_id            Int
-  item_id            Int
-  payment_token_id   Int
-  royalty_address    String?  @db.VarChar(255)
-  royalty_percentage Float    @default(0)
-  royalty_amount     Decimal  @default(0) @db.Decimal(65, 30)
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
-
-  exchange      Exchange     @relation(fields: [exchange_id], references: [id])
-  collection    Collection   @relation(fields: [collection_id], references: [id])
-  user          User         @relation(fields: [user_id], references: [id])
-  item          Item         @relation(fields: [item_id], references: [id])
-  payment_token PaymentToken @relation(fields: [payment_token_id], references: [id])
-
-  @@map("creator_earnings")
-}
-
-model ItemFavouriteList {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  item_id    Int
-  user       User     @relation(fields: [user_id], references: [id])
-  item       Item     @relation(fields: [item_id], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("item_favourite_lists")
-}
-
-model ItemViewList {
-  id         Int      @id @default(autoincrement())
-  item_id    Int
-  user_id    Int?
-  ip_address String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("item_view_lists")
-}
-
-model NotificationSetting {
-  id      Int     @id @default(autoincrement())
-  user_id Int     @unique
-  events  String?
-  user    User    @relation(fields: [user_id], references: [id])
-
-  @@map("notification_settings")
-}
-
 model TxNonce {
   id             Int      @id @default(autoincrement()) @db.SmallInt
   chain_id       Int
@@ -549,44 +153,4 @@ model TxNonce {
   updated_at     DateTime @updatedAt
 
   @@map("tx_nonces")
-}
-
-model NewsletterSubscription {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique @db.VarChar(255)
-  status     Int      @default(1) @db.SmallInt
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("news_letter_subscriptions")
-}
-
-model Ranking {
-  id                           Int      @id @default(autoincrement())
-  collection_id                Int      @unique
-  user_id                      Int
-  blockchain_id                Int
-  native_token_id              Int
-  item_count                   Int      @default(0)
-  total_volume_in_native       Decimal? @db.Decimal(65, 30)
-  total_volume_in_usd          Decimal? @db.Decimal(65, 30)
-  one_day_volume_in_native     Decimal? @db.Decimal(65, 30)
-  one_day_volume_in_usd        Decimal? @db.Decimal(65, 30)
-  one_day_volume_percent       Float?
-  seven_days_volume_in_native  Decimal? @db.Decimal(65, 30)
-  seven_days_volume_in_usd     Decimal? @db.Decimal(65, 30)
-  seven_days_volume_percent    Float?
-  thirty_days_volume_in_native Decimal? @db.Decimal(65, 30)
-  thirty_days_volume_in_usd    Decimal? @db.Decimal(65, 30)
-  thirty_days_volume_percent   Float?
-  floor_price_in_native        Decimal? @db.Decimal(65, 30)
-  floor_price_in_usd           Decimal? @db.Decimal(65, 30)
-  created_at                   DateTime @default(now())
-  updated_at                   DateTime @updatedAt
-
-  collection   Collection?   @relation(fields: [collection_id], references: [id])
-  native_token PaymentToken? @relation(fields: [native_token_id], references: [id])
-  user         User?         @relation(fields: [user_id], references: [id])
-
-  @@map("rankings")
 }
